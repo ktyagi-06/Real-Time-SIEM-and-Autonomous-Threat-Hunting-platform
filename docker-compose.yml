@@ -1,0 +1,13 @@
+services:
+  siem:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      # Required when the container is reachable by anyone but you:
+      SIEM_API_KEY: "${SIEM_API_KEY:-change-me}"
+      SIEM_ENABLE_DEMO: "true"          # set to false in production
+      # SIEM_LLM_ENABLED: "true"
+      # ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY}"
+    volumes: ["siem-data:/data"]
+volumes:
+  siem-data:

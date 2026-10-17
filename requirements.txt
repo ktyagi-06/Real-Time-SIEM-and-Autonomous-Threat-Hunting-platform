@@ -1,0 +1,4 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+# Optional: LLM-written explanations (set SIEM_LLM_ENABLED=true and ANTHROPIC_API_KEY)
+# anthropic>=0.40
