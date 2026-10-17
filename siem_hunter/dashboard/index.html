@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SIEM Hunter</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true"></span><div><strong>SIEM Hunter</strong><small>Real-time monitoring &amp; autonomous threat hunting</small></div></div>
+  <nav id="tabs" role="tablist" aria-label="Sections">
+    <button role="tab" data-tab="overview" class="active">Overview</button>
+    <button role="tab" data-tab="alerts">Alerts</button>
+    <button role="tab" data-tab="search">Search</button>
+    <button role="tab" data-tab="response">Response <span id="pendingBadge" class="badge" hidden>0</span></button>
+    <button role="tab" data-tab="audit">Audit</button>
+  </nav>
+  <div class="tools">
+    <label class="toggle"><input type="checkbox" id="autoRefresh" checked> Live</label>
+    <button id="btnDemo" class="btn primary" title="Generate a day of traffic plus a multi-stage attack and ingest it">Load demo attack</button>
+    <button id="btnKey" class="btn ghost" title="Set API key">Key</button>
+  </div>
+</header>
+
+<main>
+  <div id="banner" class="banner" hidden></div>
+
+  <section id="tab-overview" class="tab">
+    <div id="kpis" class="kpis"></div>
+    <div class="grid2">
+      <div class="card"><h2>Event volume <small>failed logins in red</small></h2><div id="chartVolume"></div></div>
+      <div class="card"><h2>Alerts by severity</h2><div id="chartSev"></div></div>
+    </div>
+    <div class="grid3">
+      <div class="card"><h2>Top noisy source IPs</h2><div id="topIps"></div></div>
+      <div class="card"><h2>MITRE ATT&amp;CK coverage <small>techniques seen</small></h2><div id="techs"></div></div>
+      <div class="card"><h2>Highest-risk alerts</h2><div id="topAlerts"></div></div>
+    </div>
+  </section>
+
+  <section id="tab-alerts" class="tab" hidden>
+    <div class="filters">
+      <select id="fSev" aria-label="Severity"><option value="">All severities</option><option>critical</option><option>high</option><option>medium</option><option>low</option></select>
+      <select id="fStatus" aria-label="Status"><option value="">All statuses</option><option>new</option><option>investigated</option><option>contained</option><option>resolved</option><option>false_positive</option></select>
+      <input id="fText" type="search" placeholder="Filter by title, IP, user, host..." aria-label="Filter alerts">
+      <span id="alertCount" class="muted"></span>
+    </div>
+    <div class="card flush"><div class="tablewrap"><table id="alertTable"></table></div></div>
+  </section>
+
+  <section id="tab-search" class="tab" hidden>
+    <form id="searchForm" class="filters">
+      <input id="q" type="search" placeholder='e.g.  ip:185.220.101.45   user:deploy   category:process_start   "shadow"' aria-label="Search events">
+      <button class="btn primary" type="submit">Search events</button>
+      <span class="muted">Fields: ip, user, host, category, process, port, outcome, source. Free text matches messages and commands.</span>
+    </form>
+    <div class="card flush"><div class="tablewrap"><table id="searchTable"></table></div></div>
+  </section>
+
+  <section id="tab-response" class="tab" hidden>
+    <div class="grid2">
+      <div class="card"><h2>Pending approval</h2><div id="pendingList"></div></div>
+      <div class="card"><h2>Active enforcement <small>simulated enforcer</small></h2><div id="enforceList"></div></div>
+    </div>
+    <div class="card flush"><h2 class="pad">All response actions</h2><div class="tablewrap"><table id="actionTable"></table></div></div>
+  </section>
+
+  <section id="tab-audit" class="tab" hidden>
+    <div class="card flush"><div class="tablewrap"><table id="auditTable"></table></div></div>
+  </section>
+</main>
+
+<aside id="drawer" class="drawer" hidden aria-label="Alert details">
+  <div class="drawer-head"><button id="drawerClose" class="btn ghost" aria-label="Close">Close</button></div>
+  <div id="drawerBody"></div>
+</aside>
+<div id="scrim" class="scrim" hidden></div>
+<div id="toast" class="toast" role="status" hidden></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
